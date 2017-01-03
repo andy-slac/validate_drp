@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# USES DATA IN ci_hsc
+
 # Setup
 export OMP_NUM_THREADS=1
 
