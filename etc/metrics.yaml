@@ -14,27 +14,27 @@ PA1:
     - level: design
       value: 5.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
     - level: design
       value: 7.5
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
     - level: minimum
       value: 8.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
     - level: minimum
       value: 12.0
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
     - level: stretch
       value: 3.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
     - level: stretch
       value: 4.5
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
 
 PF1:
   reference:
@@ -74,37 +74,37 @@ PA2:
     - level: design
       value: 15.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
       dependencies:
         - PF1
     - level: design
       value: 22.5
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
       dependencies:
         - PF1
     - level: minimum
       value: 15.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
       dependencies:
         - PF1
     - level: minimum
       value: 22.5
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
       dependencies:
         - PF1
     - level: stretch
       value: 10.0
       unit: mmag
-      filter_names: [g, r, i]
+      filter_names: [g, r, i, HSC-G, HSC-R, HSC-I]
       dependencies:
         - PF1
     - level: stretch
       value: 15.0
       unit: mmag
-      filter_names: [u, z, y]
+      filter_names: [u, z, y, HSC-U, HSC-Z, HSC-Y]
       dependencies:
         - PF1
 
@@ -124,15 +124,15 @@ AM1:
     - level: design
       value: 10.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: minimum
       value: 20.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: stretch
       value: 5.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
 
 AM2:
   reference:
@@ -150,15 +150,15 @@ AM2:
     - level: design
       value: 10.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: minimum
       value: 20.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: stretch
       value: 5.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
 
 AM3:
   reference:
@@ -176,15 +176,15 @@ AM3:
     - level: design
       value: 15.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: minimum
       value: 30.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
     - level: stretch
       value: 10.0
       unit: marcsec
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I]
 
 AF1:
   reference:
@@ -202,19 +202,19 @@ AF1:
     - level: design
       value: 10.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD1
     - level: minimum
       value: 20.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD1
     - level: stretch
       value: 5.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD1
 
@@ -234,19 +234,19 @@ AF2:
     - level: design
       value: 10.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD2
     - level: minimum
       value: 20.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD2
     - level: stretch
       value: 5.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD2
 
@@ -266,19 +266,19 @@ AF3:
     - level: design
       value: 10.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD3
     - level: minimum
       value: 20.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD3
     - level: stretch
       value: 5.0
       unit: ''
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AD3
 
@@ -298,19 +298,19 @@ AD1:
     - level: design
       value: 20.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF1
     - level: minimum
       value: 40.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF1
     - level: stretch
       value: 10.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF1
 
@@ -330,19 +330,19 @@ AD2:
     - level: design
       value: 20.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF2
     - level: minimum
       value: 40.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF2
     - level: stretch
       value: 10.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF2
 
@@ -362,18 +362,18 @@ AD3:
     - level: design
       value: 30.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF3
     - level: minimum
       value: 50.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF3
     - level: stretch
       value: 20.0
       unit: milliarcsecond
-      filter_names: [r, i]
+      filter_names: [r, i, HSC-R, HSC-I, HSC-Y]
       dependencies:
         - AF3
