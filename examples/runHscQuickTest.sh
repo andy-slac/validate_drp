@@ -12,6 +12,11 @@ export ASTROMETRY_NET_DATA_DIR=${CI_HSC_DIR}/sdss-dr9-fink-v5b
 REPO='DATA'
 RERUN=20161216
 
+PRODUCT_DIR="${VALIDATE_DRP_DIR}"
+
+CAMERA=HscQuick
+YAMLCONFIG="${PRODUCT_DIR}"/examples/"${CAMERA}".yaml
+
 # DATA_DIR=${VALIDATION_DATA_HSC_DIR}
 DATA_DIR=${CI_HSC_DIR}
 CALIB_DIR=${CI_HSC_DIR}/CALIB
@@ -68,3 +73,9 @@ makeDiscreteSkyMap.py ${REPO} --rerun ${RERUN} --id ccd=0..103 visit=${ALL_VISIT
 ### coaddDriver.py ${REPO} --rerun ${RERUN} --job coadd --cores 16 --id tract=0 filter=HSC-R --selectId ccd=0..103 visit=903332^903340
 ### coaddDriver.py ${REPO} --rerun ${RERUN} --job coadd --cores 16 --id tract=0 filter=HSC-Y --selectId ccd=0..103 visit=904350^904378
 ### multiBandDriver.py ${REPO} --rerun ${RERUN} --job multiband --cores 16 --id tract=0 filter=HSC-R^HSC-I^HSC-Y -C multiband-config.py
+
+# Run astrometry check on src
+OUTPUT="${REPO}"/rerun/"${RERUN}"
+echo "validating"
+validateDrp.py "${OUTPUT}" --configFile "${YAMLCONFIG}" "$@"
+
