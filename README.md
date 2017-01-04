@@ -257,6 +257,10 @@ E.g., the expected astrometric uncertainty is intimately related to the seeing o
 * `config/decamConfig.py`: empty config overrides for Decam.  Edit to easily include config parameters in the examples.
 * `examples/runCfhtTest.sh`: CFHT Run initialization, ingest, measurement, and astrometry validation.
 * `examples/runDecamTest.sh`: DECam Run initialization, ingest, measurement, and astrometry validation.
+* `examples/runHscTest.sh`: HSC Run initialization, ingest, measurement, and astrometry validation.
+* `examples/runCfhtQuickTest.sh`: Quick version.
+* `examples/runDecamQuickTest.sh`: Quick version.
+* `examples/runHscQuickTest.sh`: Quick run version.  Uses `ci_hsc` data instead of `validation_data_hsc`.
 * `examples/runExample.sh`: General example runner.
 * `examples/Cfht.yaml`: CFHT YAML file with visits, ccd, paramaters for validateDrp.
 * `examples/Decam.yaml`: DECam YAML file with visits, ccd, paramaters for validateDrp.
