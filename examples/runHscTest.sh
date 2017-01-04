@@ -19,7 +19,7 @@ ln -s ${CALIB_DIR} ${REPO}/CALIB
 echo lsst.obs.hsc.HscMapper > ${REPO}/_mapper
 ingestImages.py ${REPO} --mode=link ${VALIDATION_DATA_HSC_DIR}/'raw/*.fits'
 
-ALL_VISITS=903332^903333^903340^903341^903982^903983^904006^904007^904350^904351^904378^904379^904828^904829^904846^904847
+ALL_VISITS=903332^903340^903982^904006^904350^904378^904828^904846
 
 # Heavy lifting
 singleFrameDriver.py ${REPO} --calib ${CALIB_DIR} --rerun ${RERUN} --job singleFrame --cores 16 --id visit=${ALL_VISITS}
