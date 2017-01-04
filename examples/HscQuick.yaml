@@ -1,0 +1,5 @@
+# Configuration information for validate_drp to 
+# build the list of data IDs to analyze
+brightSnr: 100  # Only consider stars with higher S/N than this limit
+visits: [903334, 903336, 903338, 903342, 903344, 903346, 903986, 903988, 903990, 904010, 904014]
+filter: ['HSC-R', 'HSC-R', 'HSC-R', 'HSC-R', 'HSC-R', 'HSC-R', 'HSC-I', 'HSC-I', 'HSC-I', 'HSC-I', 'HSC-I']
