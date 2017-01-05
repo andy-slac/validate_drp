@@ -9,8 +9,8 @@ export OMP_NUM_THREADS=1
 export SETUP_ASTROMETRY_NET_DATA="astrometry_net_data sdss-dr9-fink-v5b"
 export ASTROMETRY_NET_DATA_DIR=${CI_HSC_DIR}/sdss-dr9-fink-v5b
 
-REPO='DATA'
-RERUN=20161216
+REPO='data_hsc_quick'
+RERUN=20170105
 
 PRODUCT_DIR="${VALIDATE_DRP_DIR}"
 
