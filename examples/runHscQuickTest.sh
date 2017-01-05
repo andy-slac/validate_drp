@@ -69,13 +69,8 @@ ALL_VISITS= 903334^903336^903338^903342^903344^903346^903986^903988^903990^90401
 singleFrameDriver.py ${REPO} --calib ${CALIB_DIR} --rerun ${RERUN} --job singleFrame --cores 16 --id visit=${ALL_VISITS}
 makeDiscreteSkyMap.py ${REPO} --rerun ${RERUN} --id ccd=0..103 visit=${ALL_VISITS}
 # makeDiscreteSkyMap INFO: tract 0 has corners (321.166, -0.594), (320.606, -0.594), (320.606, -0.034), (321.166, -0.034) (RA, Dec deg) and 3 x 3 patches
-### coaddDriver.py ${REPO} --rerun ${RERUN} --job coadd --cores 16 --id tract=0 filter=HSC-I --selectId ccd=0..103 visit=903982^904006^904828^904846
-### coaddDriver.py ${REPO} --rerun ${RERUN} --job coadd --cores 16 --id tract=0 filter=HSC-R --selectId ccd=0..103 visit=903332^903340
-### coaddDriver.py ${REPO} --rerun ${RERUN} --job coadd --cores 16 --id tract=0 filter=HSC-Y --selectId ccd=0..103 visit=904350^904378
-### multiBandDriver.py ${REPO} --rerun ${RERUN} --job multiband --cores 16 --id tract=0 filter=HSC-R^HSC-I^HSC-Y -C multiband-config.py
 
 # Run astrometry check on src
 OUTPUT="${REPO}"/rerun/"${RERUN}"
 echo "validating"
 validateDrp.py "${OUTPUT}" --configFile "${YAMLCONFIG}" "$@"
-
