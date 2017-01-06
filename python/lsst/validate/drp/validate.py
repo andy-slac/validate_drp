@@ -149,10 +149,10 @@ def run(repo, dataIds, metrics, outputPrefix=None, level="design", verbose=False
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
     if passedCurrent:
         print('PASSED ({count:d}/{count:d} measurements)'.format(
-            count=measurementCount))
+            count=currentTestCount))
     else:
         msg = 'FAILED ({failCount:d}/{count:d} measurements)'.format(
-            failCount=currentFailCount, count=measurementCount)
+            failCount=currentFailCount, count=currentTestCount)
         print(bcolors.FAIL + msg + bcolors.ENDC)
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
 
