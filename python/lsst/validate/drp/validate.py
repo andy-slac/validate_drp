@@ -104,7 +104,6 @@ def run(repo, dataIds, metrics, outputPrefix=None, level="design", verbose=False
                            **kwargs)
         jobs[filterName] = job
 
-    passedCurrent = True  # Trip to false for failure in the 'current' level
     currentTestCount = 0
     currentFailCount = 0
 
@@ -115,8 +114,6 @@ def run(repo, dataIds, metrics, outputPrefix=None, level="design", verbose=False
         print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
 
         for specName in job.spec_levels:
-            passed = True
-
             measurementCount = 0
             failCount = 0
             for m in job.measurements:
@@ -124,16 +121,13 @@ def run(repo, dataIds, metrics, outputPrefix=None, level="design", verbose=False
                     continue
                 measurementCount += 1
                 if not m.check_spec(specName):
-                    passed = False
                     failCount += 1
 
             if specName == level:
                 currentTestCount += measurementCount
                 currentFailCount += failCount
-                if not passed:
-                    passedCurrent = False
 
-            if passed:
+            if failCount == 0:
                 print('Passed {level:12s} {count:d} measurements'.format(
                     level=specName, count=measurementCount))
             else:
@@ -147,13 +141,14 @@ def run(repo, dataIds, metrics, outputPrefix=None, level="design", verbose=False
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
     print(bcolors.BOLD + bcolors.HEADER + '{0} level summary'.format(level) + bcolors.ENDC)
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
-    if passedCurrent:
-        print('PASSED ({count:d}/{count:d} measurements)'.format(
-            count=currentTestCount))
-    else:
+    if currentFailCount > 0:
         msg = 'FAILED ({failCount:d}/{count:d} measurements)'.format(
             failCount=currentFailCount, count=currentTestCount)
         print(bcolors.FAIL + msg + bcolors.ENDC)
+    else:
+        print('PASSED ({count:d}/{count:d} measurements)'.format(
+            count=currentTestCount))
+
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
 
 
