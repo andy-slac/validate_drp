@@ -25,6 +25,8 @@ from past.builtins import basestring
 
 import os
 
+import numpy as np
+
 import yaml
 
 import lsst.daf.persistence as dafPersist
@@ -34,7 +36,6 @@ import lsst.afw.coord as afwCoord
 
 
 def calculate_ellipticity(shape):
-    import numpy as np
     I_xx, I_xy, I_yy = shape.getIxx(), shape.getIxy(), shape.getIyy()
     e = (I_xx - I_yy + 2j*I_xy) / (I_xx+I_yy + 2*np.sqrt(I_xx*I_yy - I_xy*2))
     e1 = np.imag(e)
@@ -72,10 +73,30 @@ def averageRaDecFromCat(cat):
     return averageRaDec(cat.get('coord_ra'), cat.get('coord_dec'))
 
 
+def averageRaFromCat(cat):
+    meanRa, meanDec = averageRaDecFromCat(cat)
+    return meanRa
+
+
+def averageDecFromCat(cat):
+    meanRa, meanDec = averageRaDecFromCat(cat)
+    return meanDec
+
+
 def medianEllipticityResidualsFromCat(cat):
     e1_median = np.median(cat.get('e1') - cat.get('psf_e1'))
     e2_median = np.median(cat.get('e2') - cat.get('psf_e2'))
     return e1_median, e2_median
+
+
+def medianEllipticity1ResidualsFromCat(cat):
+    e1_median = np.median(cat.get('e1') - cat.get('psf_e1'))
+    return e1_median
+
+
+def medianEllipticity2ResidualsFromCat(cat):
+    e2_median = np.median(cat.get('e2') - cat.get('psf_e2'))
+    return e2_median
 
 
 def getCcdKeyName(dataid):
