@@ -117,10 +117,7 @@ class TExMeasurement(MeasurementBase):
 
         # Measurement Parameters
         self.register_parameter('D', datum=self.metric.D)
-        self.register_parameter('bin_operator', datum=self.metric.bin_operator)
-
-        # Register measurement extras
-#        self.register_extra('ellipticityCorrelation', label='ellipticity correlation')
+        self.register_parameter('bin_range_operator', datum=self.metric.bin_range_operator)
 
         # Add external blob so that links will be persisted with
         # the measurement
@@ -136,7 +133,7 @@ class TExMeasurement(MeasurementBase):
             plot_correlation_function_ellipticity(r, xip, xip_err)
         corr, corr_err = select_bin_from_corr(r, xip, xip_err,
             radius=self.D,
-            operator=Metric.convert_operator_str(self.bin_operator))
+            operator=Metric.convert_operator_str(self.bin_range_operator))
 
 #        self.ellipticityCorrelation = corr
         self.quantity = corr * u.Unit('')
