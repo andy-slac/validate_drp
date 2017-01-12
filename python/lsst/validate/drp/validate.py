@@ -312,7 +312,7 @@ def runOneFilter(repo, visitDataIds, metrics, brightSnr=100,
                     prefix = bcolors.OKBLUE + '\tPassed '
                 else:
                     prefix = bcolors.FAIL + '\tFailed '
-                infoStr = '{specName:12s} {meas:.4f} {op} {spec:.4f}'.format(
+                infoStr = '{specName:12s} {meas:.4g} {op} {spec:.4g}'.format(
                     specName=specName,
                     meas=m.quantity,
                     op=metric.operator_str,
