@@ -112,24 +112,68 @@ class ValidateDrpTask(SuperTask):
         return parser
 
     @pipeBase.timeMethod
-    def execute(self, dataRef):
-        """ValidateDrpTask SuperTask entrypoint."""
+    def execute(self, dataRefs, filterName):
+        """ValidateDrpTask SuperTask entrypoint
+
+        Parameters
+        ----------
+        dataRefs : `list` of `ButlerDataRef
+            Input data.
+        filterName : `str`
+            Filter name, all input data correspind to this filter (this is
+            determined by `makeTargetList` method).
+        """
         # NOTE will be rename run_quantum
-        self.log.info("Executing ValidateDrpTask.")
+        self.log.info("Executing ValidateDrpTask with filter=%r", filterName)
 
         # Get dataIds that know about the filter by querying butler
-        butler = dataRef.butler
-        butlerSubset = butler.subset('src', dataId=dataRef.dataId)
-        dataIds = [r.dataId for r in butlerSubset]
+        butler = dataRefs[0].getButler()
+        dataIds = [r.dataId for r in dataRefs]
+        self.log.info("dataIds: %s", dataIds)
 
         metrics = load_metrics(self.config.metricsFilePath)
 
-        run(butler, dataIds, metrics, self.config.outputPrefix,
+        run(butler, dataIds, filterName, metrics, self.config.outputPrefix,
             level=self.config.targetSpecLevel, makePlot=self.config.makePlot,
             brightSnr=self.config.brightSnr)
 
+    @classmethod
+    def makeTargetList(cls, refList, dataRefMap=None):
+        """Build targets list for task.
 
-def run(butler, dataIds, metrics, outputPrefix, level="design",
+        ValidateDrp works on datasets grouped by filter. Here we create a
+        set of dataRefs grouped by filter and add a keyword 'filter' with
+        a filter name.
+
+        See method description in a base class for argument and return type
+        description.
+
+        .. note:: This is a temporary implementation until we have proper
+                scheduling system design.
+        """
+        if not refList:
+            return [(None, dict(filterName=''))]
+
+        filterMap = {}
+        for dataRef in refList:
+            filterName = dataRef.dataId.get('filter', '')
+            filterMap.setdefault(filterName, []).append(dataRef)
+
+        targets = []
+        for filterName, refs in filterMap.items():
+            targets += [(refs, dict(filterName=filterName))]
+        return targets
+
+    def _get_config_name(self):
+        """Override base class method.
+
+        As we do not have configuration dataset in butler we have to disable
+        saving of that dataset by returning None from this method.
+        """
+        return None
+
+
+def run(butler, dataIds, filterName, metrics, outputPrefix, level="design",
         verbose=False, **kwargs):
     """Main entrypoint from ``validateDrp.py``.
 
@@ -143,6 +187,8 @@ def run(butler, dataIds, metrics, outputPrefix, level="design",
     dataIds : `list` of `dict`
         List of butler data IDs of Image catalogs to compare to reference.
         The calexp cpixel image is needed for the photometric calibration.
+    filterName : `str`
+        Filter name, all dataIds correspond to this filter name.
     metrics : `dict` or `collections.OrderedDict`
         Dictionary of `lsst.validate.base.Metric` instances. Typically this is
         data from ``validate_drp``\ 's ``metrics.yaml`` and loaded with
@@ -165,57 +211,50 @@ def run(butler, dataIds, metrics, outputPrefix, level="design",
         there will be annoyance and sadness as those spaces will appear in the filenames.
     """
 
-    allFilters = set([d['filter'] for d in dataIds])
-
-    jobs = {}
-    for filterName in allFilters:
-        # Do this here so that each outputPrefix will have a different name for each filter.
-        thisOutputPrefix = "%s_%s_" % (outputPrefix.rstrip('_'), filterName)
-        theseVisitDataIds = [v for v in dataIds if v['filter'] == filterName]
-        job = runOneFilter(butler, theseVisitDataIds, metrics,
-                           thisOutputPrefix,
-                           verbose=verbose, filterName=filterName,
-                           **kwargs)
-        jobs[filterName] = job
+    # Do this here so that each outputPrefix will have a different name for each filter.
+    thisOutputPrefix = "%s_%s_" % (outputPrefix.rstrip('_'), filterName)
+    job = runOneFilter(butler, dataIds, metrics,
+                       thisOutputPrefix,
+                       verbose=verbose, filterName=filterName,
+                       **kwargs)
 
     passedCurrent = True  # Trip to false for failure in the 'current' level
     currentTestCount = 0
     currentFailCount = 0
 
-    for filterName, job in jobs.items():
-        print('')
-        print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
-        print(bcolors.BOLD + bcolors.HEADER + '{0} band summary'.format(filterName) + bcolors.ENDC)
-        print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
+    print('')
+    print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
+    print(bcolors.BOLD + bcolors.HEADER + '{0} band summary'.format(filterName) + bcolors.ENDC)
+    print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
 
-        for specName in job.spec_levels:
-            passed = True
+    for specName in job.spec_levels:
+        passed = True
 
-            measurementCount = 0
-            failCount = 0
-            for m in job.measurements:
-                if m.quantity is None:
-                    continue
-                measurementCount += 1
-                if not m.check_spec(specName):
-                    passed = False
-                    failCount += 1
+        measurementCount = 0
+        failCount = 0
+        for m in job.measurements:
+            if m.quantity is None:
+                continue
+            measurementCount += 1
+            if not m.check_spec(specName):
+                passed = False
+                failCount += 1
 
-            if specName == level:
-                currentTestCount += measurementCount
-                currentFailCount += failCount
-                if not passed:
-                    passedCurrent = False
+        if specName == level:
+            currentTestCount += measurementCount
+            currentFailCount += failCount
+            if not passed:
+                passedCurrent = False
 
-            if passed:
-                print('Passed {level:12s} {count:d} measurements'.format(
-                    level=specName, count=measurementCount))
-            else:
-                msg = 'Failed {level:12s} {failCount} of {count:d} failed'.format(
-                    level=specName, failCount=failCount, count=measurementCount)
-                print(bcolors.FAIL + msg + bcolors.ENDC)
+        if passed:
+            print('Passed {level:12s} {count:d} measurements'.format(
+                level=specName, count=measurementCount))
+        else:
+            msg = 'Failed {level:12s} {failCount} of {count:d} failed'.format(
+                level=specName, failCount=failCount, count=measurementCount)
+            print(bcolors.FAIL + msg + bcolors.ENDC)
 
-        print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC + '\n')
+    print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC + '\n')
 
     # print summary against current spec level
     print(bcolors.BOLD + bcolors.HEADER + "=" * 65 + bcolors.ENDC)
